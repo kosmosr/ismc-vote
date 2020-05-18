@@ -32,7 +32,6 @@ public class App {
             @Override
             public void run() {
                 log.info("投票程序开始, 当前时间: {}", Instant.now());
-                log.info("env: {}, properties: {}", System.getenv(), System.getProperties());
                 FateApi fateApi = new FateApi();
                 BigDecimal fateAccount = fateApi.getFateAccount();
                 if (fateAccount.equals(BigDecimal.ZERO) || fateAccount.compareTo(new BigDecimal(50)) < 0) {

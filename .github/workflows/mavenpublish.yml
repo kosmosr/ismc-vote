@@ -33,7 +33,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Run App
-      run: java -jar target/ismc-vote-1.0-SNAPSHOT.jar
+      run: java -jar -Djsse.enableSNIExtension=false target/ismc-vote-1.0-SNAPSHOT.jar
       env:
         pd_id: ${{ secrets.pd_id }}
         pd_key: ${{ secrets.pd_key }}
