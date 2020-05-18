@@ -27,6 +27,7 @@ public class App {
             @Override
             public void run() {
                 log.info("投票程序开始, 当前时间: {}", Instant.now());
+                log.info("env: {}, properties: {}", System.getenv(), System.getProperties());
                 if (StringUtils.isEmpty(FateConstant.FATE_PD_ID) || StringUtils.isEmpty(FateConstant.FATE_PD_KEY)) {
                     log.info("常量获取失败!");
                     return;
