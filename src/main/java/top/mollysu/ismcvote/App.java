@@ -17,7 +17,7 @@ import java.util.TimerTask;
 public class App {
     public static void main(String[] args) {
         Random random = new Random();
-        int randomSeconds = random.nextInt(1800);
+        int randomSeconds = random.nextInt(120);
         LocalDateTime now = LocalDateTime.now();
         log.info("当时时间: {}, 执行时间: {}, randomSeconds: {}", now, now.plusSeconds(randomSeconds), randomSeconds);
         Timer timer = new Timer();
