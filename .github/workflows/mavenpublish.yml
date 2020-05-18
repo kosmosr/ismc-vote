@@ -23,10 +23,16 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Build with Maven
+      uses: actions/cache@v1
       run: mvn -B package --file pom.xml
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
 
     - name: Run App
-      run: pwd
+      run: java -jar target/ismc-vote-1.0-SNAPSHOT.jar
 #
 #    - name: Publish to GitHub Packages Apache Maven
 #      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
