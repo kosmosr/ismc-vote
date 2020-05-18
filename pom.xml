@@ -20,7 +20,7 @@
         <repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/kosmosr/REPOSITORY</url>
+            <url>https://maven.pkg.github.com/kosmosr/ismc-vote</url>
         </repository>
     </distributionManagement>
 
