@@ -34,6 +34,13 @@ jobs:
 
     - name: Run App
       run: java -jar target/ismc-vote-1.0-SNAPSHOT.jar
+      env:
+        pd_id: ${{ secrets.pd_id }}
+        pd_key: ${{ secrets.secrets }}
+        proxy_auth_user: ${{ secrets.proxy_auth_user }}
+        proxy_auth_password: ${{ secrets.proxy_auth_password }}
+        orderId: ${{ secrets.orderId }}
+        signature: ${{ secrets.signature }}
 #
 #    - name: Publish to GitHub Packages Apache Maven
 #      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
