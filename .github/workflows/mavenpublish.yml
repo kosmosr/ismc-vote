@@ -4,9 +4,8 @@
 name: Maven Package && Run App
 
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron:  '0 10-14 * * *'
 
 jobs:
   build:

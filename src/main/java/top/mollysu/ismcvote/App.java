@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
 import top.mollysu.ismcvote.core.FateApi;
@@ -24,7 +26,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class App {
     public static void main(String[] args) {
         Random random = new Random();
-        int randomSeconds = random.nextInt(5);
+        // 10分钟内执行
+        int randomSeconds = random.nextInt(60);
         LocalDateTime now = LocalDateTime.now();
         log.info("当时时间: {}, 执行时间: {}, randomSeconds: {}", now, now.plusSeconds(randomSeconds), randomSeconds);
         Timer timer = new Timer();
@@ -44,28 +47,33 @@ public class App {
                     Request request = new Request.Builder()
                             .url(url).get().build();
                     try (Response response = client.newCall(request).execute()) {
-                        String proxy = response.body().string();
-                        VoteApi voteApi = new VoteApi(proxy);
+                        ResponseBody responseBody = response.body();
+                        String proxy;
+                        if (responseBody == null || StringUtils.isEmpty(proxy = responseBody.string())) {
+                            log.error("获取代理失败！response: {}", response);
+                        } else {
+                            VoteApi voteApi = new VoteApi(proxy);
 
-                        AtomicInteger i = new AtomicInteger();
-                        voteApi.getVerifyCode();
-                        while (i.get() < 5) {
-                            try {
-                                Optional.ofNullable(voteApi.getVerifyCode())
-                                        .map(verifyCode -> {
-                                            String regVerifyCode = fateApi.regVerifyCode(verifyCode);
-                                            if (regVerifyCode == null || regVerifyCode.indexOf(0) == '0') {
-                                                return null;
-                                            }
-                                            return regVerifyCode;
-                                        })
-                                        .ifPresent(verifyCode -> {
-                                            voteApi.vote(verifyCode);
-                                            i.getAndIncrement();
-                                        });
-                            } catch (Exception e) {
-                                log.error("投票失败, exception: {}", e.toString());
-                                break;
+                            AtomicInteger i = new AtomicInteger();
+                            voteApi.getVerifyCode();
+                            while (i.get() < 5) {
+                                try {
+                                    Optional.ofNullable(voteApi.getVerifyCode())
+                                            .map(verifyCode -> {
+                                                String regVerifyCode = fateApi.regVerifyCode(verifyCode);
+                                                if (regVerifyCode == null || regVerifyCode.indexOf(0) == '0') {
+                                                    return null;
+                                                }
+                                                return regVerifyCode;
+                                            })
+                                            .ifPresent(verifyCode -> {
+                                                voteApi.vote(verifyCode);
+                                                i.getAndIncrement();
+                                            });
+                                } catch (Exception e) {
+                                    log.error("投票失败, exception: {}", e.toString());
+                                    break;
+                                }
                             }
                         }
                     } catch (IOException e) {
