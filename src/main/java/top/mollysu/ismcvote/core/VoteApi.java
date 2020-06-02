@@ -169,7 +169,7 @@ public class VoteApi {
                 throw new VoteException("投票失败");
             }
             String voteResult = body.string();
-            NotificationApi.instance.sendNotification("投票结果", voteResult);
+            NotificationApi.instance.sendNotification("投票结果", "当前时间: " + Instant.now() + '\n' +voteResult);
             log.info("Vote: {}", voteResult);
         } catch (IOException e) {
             log.error("投票失败，exception: {}", e.toString());
