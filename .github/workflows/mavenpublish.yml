@@ -40,6 +40,7 @@ jobs:
         proxy_auth_password: ${{ secrets.proxy_auth_password }}
         orderId: ${{ secrets.orderId }}
         signature: ${{ secrets.signature }}
+        sc_key: ${{ secrets.sc_key }}
 #
 #    - name: Publish to GitHub Packages Apache Maven
 #      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
