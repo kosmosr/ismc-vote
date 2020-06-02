@@ -6,6 +6,8 @@ import lombok.extern.log4j.Log4j2;
 import okhttp3.*;
 import top.mollysu.ismcvote.constant.SCConstant;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 import java.io.IOException;
 
 /**
@@ -20,7 +22,12 @@ public class NotificationApi {
     public static NotificationApi instance = new NotificationApi();
 
     private NotificationApi() {
-        this.client = new OkHttpClient();
+        this.client = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        }).build();
     }
 
     public void sendNotification(String title, String content) {
