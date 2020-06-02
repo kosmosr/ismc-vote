@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
 import top.mollysu.ismcvote.core.FateApi;
+import top.mollysu.ismcvote.core.NotificationApi;
 import top.mollysu.ismcvote.core.VoteApi;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Hello world!
+ * Vote App!
  */
 @Log4j2
 public class App {
@@ -39,6 +40,7 @@ public class App {
                 BigDecimal fateAccount = fateApi.getFateAccount();
                 if (fateAccount.equals(BigDecimal.ZERO) || fateAccount.compareTo(new BigDecimal(50)) < 0) {
                     log.info("投票结束，打码平台余额不足, fateAccount: {}", fateAccount);
+                    NotificationApi.instance.sendNotification("投票失败！", "打码平台余额不足, fateAccount:" + fateAccount);
                 } else {
                     OkHttpClient client = new OkHttpClient();
                     String orderId = System.getenv("orderId");

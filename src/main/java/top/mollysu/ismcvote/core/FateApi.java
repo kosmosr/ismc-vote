@@ -92,7 +92,7 @@ public class FateApi {
                 throw new VoteException("【FateApi】识别验证码接口，调用失败");
             }
         } catch (IOException e) {
-            log.error("【FateApi】识别验证码接口，调用失败，exception: {}", e.getMessage());
+            log.error("【FateApi】识别验证码接口，调用失败", e);
             throw new VoteException("【FateApi】识别验证码接口，调用失败");
         }
     }

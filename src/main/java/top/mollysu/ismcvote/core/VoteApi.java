@@ -168,7 +168,9 @@ public class VoteApi {
                 log.error("投票失败, 响应内容有误, request: {}", request);
                 throw new VoteException("投票失败");
             }
-            log.info("Vote: {}", body.string());
+            String voteResult = body.string();
+            NotificationApi.instance.sendNotification("投票结果", voteResult);
+            log.info("Vote: {}", voteResult);
         } catch (IOException e) {
             log.error("投票失败，exception: {}", e.toString());
         }
